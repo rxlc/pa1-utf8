@@ -34,7 +34,7 @@ int32_t width_from_start_byte(char start_byte) {
     unsigned int start_masks[] = {0b1000000, 0b11100000, 0b11110000, 0b11111000};
     unsigned int start_patterns[] = {0b0000000, 0b11000000, 0b11100000, 0b11110000};
 
-    for (int i=1; i<2; i++) {
+    for (int i=0; i<4; i++) {
         if ((start_byte & start_masks[i]) == start_patterns[i]) return i+1;
     }
 
@@ -51,6 +51,7 @@ int32_t utf8_strlen(char str[]) {
 
     while (str[index] != 0) {
         int bytes_taken_up = width_from_start_byte(str[index]);
+        printf("%d ", bytes_taken_up);
         if (bytes_taken_up > 1) ignore_bytes_count += bytes_taken_up - 1;      
         index++;
     }
@@ -73,13 +74,27 @@ int32_t codepoint_index_to_byte_index(char str[], int32_t cpi) {
 }
 
 void utf8_substring(char str[], int32_t cpi_start, int32_t cpi_end, char result[]) {
-    
+    int result_index = 0;
+    int byte_index = 0;
+
+    for (int i=cpi_start; i<cpi_end; i++) {
+        int char_width = width_from_start_byte(str[i]);
+        int byte_index = codepoint_index_to_byte_index(str, i);
+
+        for (int j=0; j<char_width; j++) {
+            result[result_index] = str[byte_index - char_width + 1];
+            result_index++;
+        }
+    }
+
+    result[result_index] = '\0';
 }
 
 int main() {
-    char str[] = "Joséph";
-    int32_t idx = 4;
-    printf("Codepoint index %d is byte index %d\n", idx, codepoint_index_to_byte_index("Joséph", idx));
+    char result[17];
+    char str[] = {"🦀🦮🦮🦀🦀🦮🦮"};
+    utf8_substring(str, 3, 7, result);
+    printf("String: %s\nSubstring: %s", str, result); // these emoji are 4 bytes long
 
     return 0;
 }
