@@ -129,27 +129,87 @@ int32_t is_animal_emoji_at(char str[], int32_t cpi) {
     return (code_point >= 128000 && code_point <= 128063) || (code_point >= 129408 && code_point <= 129454);  
 }
 
-void utf8_analyze() {
-    char input[100];
+int32_t string_byte_length(char str[]) {
+    int index = 0;
+    while (str[index] != 0) index++;
+
+    return index;
+}
+
+void remove_nextline(char str[]) {
+    int length = string_byte_length(str);
+    if (length > 0  && str[length - 1] == '\n') str[length - 1] = 0;
+}
+
+void copy_string(char str[], char result[]) {
+    int length = string_byte_length(str);
+
+    for (int i=0; i<length; i++) {
+        result[i] = str[i];
+    }
+
+    result[length] = 0;
+}
+
+void utf8_analyze_string() {
+    char input[] = "My 🐩’s name is Erdős.";
     
     printf("%s", "Enter a UTF-8 encoded string: ");
-    fgets(input, 100, stdin);
+    //fgets(input, 100, stdin);
+    remove_nextline(input);
 
     printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
-    capitalize_ascii(input);
-    printf("Uppercased ASCII: \"%s\"\n", input);
+
+    char capitalize_input[100];
+    copy_string(input, capitalize_input);
+    capitalize_ascii(capitalize_input);
+    printf("Uppercased ASCII: \"%s\"\n", capitalize_input);
     
-    int index = 0;
-    while (input[index] != 0) index++;
-    printf("Length in bytes: %d\n", index);
+    printf("Length in bytes: %d\n", string_byte_length(input));
     
     printf("Number of code points: %d\n", utf8_strlen(input));
 
+    printf("Bytes per code point:");
+    for (int i=0; i < utf8_strlen(input); i++) {
+        int byte_index = codepoint_index_to_byte_index(input, i);
+        int bytes_taken_up = width_from_start_byte(input[byte_index]);
+        if (bytes_taken_up > 0) printf(" %d", bytes_taken_up); 
+    }
+    printf("\n");
 
+    char result[100];
+    utf8_substring(input, 0, 6, result);
+    printf("Substring of the first 6 code points: \"%s\"\n", result);
+
+    printf("Code points as decimal numbers:");
+    for (int i=0; i < utf8_strlen(input); i++) {
+        printf(" %d", codepoint_at(input, i));
+    }
+    printf("\n");
+
+    char animals[100];
+    printf("Animal emojis: ");
+    int animals_index = 0;
+    for (int i=0; i< utf8_strlen(input); i++) {
+        if (is_animal_emoji_at(input, i)) {
+            int byte_index = codepoint_index_to_byte_index(input, i);
+            int bytes_taken_up = width_from_start_byte(input[byte_index]);
+
+            for (int i = 0; i < bytes_taken_up; i++) {
+                animals[animals_index] = input[byte_index + i];
+                animals_index++;
+            }
+        }
+    }
+
+    animals[animals_index] = 0;
+
+    printf("%s\n", animals);
 }
 
 int main() {
-    utf8_analyze();
+    utf8_analyze_string();
 
     return 0;
 }
+
