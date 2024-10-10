@@ -152,13 +152,12 @@ void copy_string(char str[], char result[]) {
 }
 
 void utf8_analyze_string() {
-    char input[] = "My 🐩’s name is Erdős.";
-    
+    char input[100];
     printf("%s", "Enter a UTF-8 encoded string: ");
-    //fgets(input, 100, stdin);
+    fgets(input, 100, stdin);
     remove_nextline(input);
 
-    printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
+    printf("Valid ASCII: %d\n", is_ascii(input));
 
     char capitalize_input[100];
     copy_string(input, capitalize_input);
@@ -212,4 +211,3 @@ int main() {
 
     return 0;
 }
-
