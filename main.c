@@ -153,7 +153,7 @@ void copy_string(char str[], char result[]) {
 
 void utf8_analyze_string() {
     char input[100];
-    printf("%s", "Enter a UTF-8 encoded string: ");
+    printf("%s", "Enter a UTF-8 encoded string: \n");
     fgets(input, 100, stdin);
     remove_nextline(input);
 
