@@ -152,7 +152,7 @@ void copy_string(char str[], char result[]) {
 }
 
 void print_ascii_validity(char str[]) {
-    printf("Valid ASCII: %s\n", is_ascii(str) ? "true" : "false");
+    printf("\nValid ASCII: %s\n", is_ascii(str) ? "true" : "false");
 }
 
 void utf8_analyze_string() {
