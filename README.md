@@ -4,14 +4,15 @@
 
 - **Most important**: The `test_script` we shared has an unfortunate bug – if a `.txt.expect` file doesn't have a blank line at the end, it may skip checking that the last line of the `.expect` correctly matches the program's output. So, to be super sure your tests are working, you should make sure your `.test.expect` files have a blank line/newline at the end. Our two sample tests didn't! So if you were confused about why a test was passing that shouldn't, that could be a reason why.
 - Some people noticed that in our provided test we didn't include the quotes around the output for uppercased ASCII:
-  
+
   `Uppercased ASCII: "MY 🐩’S NAME IS ERDőS."`
-  
+
   vs.
-  
+
   `Uppercased ASCII: MY 🐩’S NAME IS ERDőS.`
-  
-  Either is fine. If you want to pick one, include the quotes. 
+
+  Either is fine. If you want to pick one, include the quotes.
+
 - The problem didn't say what to do with `utf8_substring` if the end index is larger than the `utf8_strlen` for the string. In that case, it should act as if the end index was exactly `utf8_strlen` of the string. That makes it so if you take the substring of the first 6 code points of a string with fewer than 6, you get the whole string.
 
 ## UTF-8
@@ -36,12 +37,11 @@ To get started, visit the [Github Classroom](https://classroom.github.com/a/Op6L
 
 ## Milestones, Working Process, and Definitions
 
-
 The functions described below are organized into milestones; you should definitely finish the functions in a milestone set before moving onto the next.
 
 In general, you should work one function at a time, and earlier functions may be useful in implementing later functions.
 
-A good first task is to implement *only* `is_ascii` and the corresponding part of `main` needed to read input and print the result for `is_ascii`, and make sure you can test that. Then move onto `capitalize_ascii`, and so on.
+A good first task is to implement _only_ `is_ascii` and the corresponding part of `main` needed to read input and print the result for `is_ascii`, and make sure you can test that. Then move onto `capitalize_ascii`, and so on.
 
 You can and should save your work by using `git` commits (if you're comfortable with that), or even just saving copies of your `.c` file when you hit important milestones. We may ask to see your work from an earlier milestone if you ask us for help on a function from a later one.
 
@@ -53,12 +53,12 @@ Some reminders and information about the function signatures:
 
 ## Functions - Milestone 1
 
-
 ### `int32_t is_ascii(char str[])`
 
 Takes a UTF-8 encoded string and returns if it is valid ASCII (e.g. all bytes are 127 or less).
 
-#### Example Usage: 
+#### Example Usage:
+
 ```
 printf("Is 🔥 ASCII? %d\n", is_ascii("🔥"));
 
@@ -73,9 +73,10 @@ Is abcd ASCII? 1
 
 ### `int32_t capitalize_ascii(char str[])`
 
-Takes a UTF-8 encoded string and *changes* it in-place so that any ASCII lowercase characters `a`-`z` are changed to their uppercase versions. Leaves all other characters unchanged. It returns the number of characters updated from lowercase to uppercase.
+Takes a UTF-8 encoded string and _changes_ it in-place so that any ASCII lowercase characters `a`-`z` are changed to their uppercase versions. Leaves all other characters unchanged. It returns the number of characters updated from lowercase to uppercase.
 
-#### Example Usage: 
+#### Example Usage:
+
 ```
 int32_t ret = 0;
 char str[] = "abcd";
@@ -96,6 +97,7 @@ Given the start byte of a UTF-8 sequence, return how many bytes it indicates the
 Returns 1 for ASCII characters, and -1 if byte is not a valid start byte.
 
 #### Example Usage:
+
 ```
 char s[] = "Héy"; // same as { 'H', 0xC3, 0xA9, 'y', 0 },   é is start byte + 1 cont. byte
 printf("Width: %d bytes\n", width_from_start_byte(s[1])); // start byte 0xC3 indicates 2-byte sequence
@@ -116,6 +118,7 @@ Takes a UTF-8 encoded string and returns the number of UTF-8 codepoints it repre
 Returns -1 if there are any errors encountered in processing the UTF-8 string.
 
 #### Example Usage:
+
 ```
 char str[] = "Joséph";
 printf("Length of string %s is %d\n", str, utf8_strlen(str));  // 6 codepoints, (even though 7 bytes)
@@ -126,11 +129,12 @@ Length of string Joséph is 6
 
 ### `int32_t codepoint_index_to_byte_index(char str[], int32_t cpi)`
 
-Given a UTF-8 encoded string, and a codepoint index, return the byte index in the string where the Unicode character at the given codepoint index starts. 
+Given a UTF-8 encoded string, and a codepoint index, return the byte index in the string where the Unicode character at the given codepoint index starts.
 
 Returns -1 if there are any errors encountered in processing the UTF-8 string.
 
-#### Example Usage: 
+#### Example Usage:
+
 ```
 char str[] = "Joséph";
 int32_t idx = 4;
@@ -147,6 +151,7 @@ Takes a UTF-8 encoded string and start(inclusive) and end(exclusive) codepoint i
 If `cpi_start` is greater than `cpi_end` or either is negative, the function should have no effect.
 
 #### Example Usage:
+
 ```
 char result[17];
 utf8_substring("🦀🦮🦮🦀🦀🦮🦮", 3, 7, result)
@@ -164,6 +169,7 @@ Substring: 🦀🦀🦮🦮
 Takes a UTF-8 encoded string and a codepoint index, and returns a decimal representing the codepoint at that index.
 
 #### Example Usage:
+
 ```
 char str[] = "Joséph";
 int32_t idx = 4;
@@ -178,8 +184,6 @@ Codepoint at 4 in Joséph is 112
 Takes a UTF-8 encoded string and an codepoint index, and returns if the code point at that index is an animal emoji.
 
 For simplicity for this question, we will define that that the “animal emojii” are in two ranges: from 🐀 to 🐿️ and from 🦀 to 🦮. (Yes, this technically includes things like 🐽 which are only related to or part of an animal, and excludes a few things like 🙊, 😸, which are animal faces.). You may find the [wikipedia page on Unicode emoji](https://en.wikipedia.org/wiki/List_of_emojis) helpful here.
-
-
 
 ## UTF-8 Analyzer
 
@@ -206,7 +210,7 @@ You can also test the contents of _files_ by using the `<` operator:
 $ cat utf8test.txt
 My 🐩’s name is Erdős.
 $ ./utf8analyzer < utf8test.txt
-Enter a UTF-8 encoded string: 
+Enter a UTF-8 encoded string:
 Valid ASCII: false
 Uppercased ASCII: "MY 🐩’S NAME IS ERDőS."
 Length in bytes: 27
@@ -218,12 +222,15 @@ Animal emojis: 🐩
 ```
 
 ## Testing
+
 We provide 2 basic tests in the `tests` folder - which contain simple tests for detecting if there are errors in your code while identifying valid ASCII and converting ASCII lowercase to uppercase characters. We have provided a test bash file that checks if your program output contains each line in the .expect file. You can use the following commands to run the tests (You may need to change the permission of the `test_script` file to be executable with the command `chmod u+x test_script`.):
+
 ```
 gcc *.c -o utfanalyzer // compiles your C code into an executable called utfanalyzer
 ./test_script utfanalyzer
 ```
-Then it will print out result in your terminal. 
+
+Then it will print out result in your terminal.
 
 You can see the result for a single test by using:
 
@@ -242,7 +249,7 @@ Here are some other ideas for tests you should write. They aren't necessarily co
 
 Answer each of these with a few sentences or paragraphs; don't write a whole essay, but use good writing practice to communicate the essence of the idea. A good response doesn't need to be long, but it needs to have attention to detail and be clear. Examples help!
 
-- Another encoding of Unicode is UTF-32, which encodes *all* Unicode code points in 4 bytes. For things like ASCII, the leading 3 bytes are all 0's. What are some tradeoffs between UTF-32 and UTF-8?
+- Another encoding of Unicode is UTF-32, which encodes _all_ Unicode code points in 4 bytes. For things like ASCII, the leading 3 bytes are all 0's. What are some tradeoffs between UTF-32 and UTF-8?
 
 - UTF-8 has a leading `10` on all the bytes past the first for multi-byte code points. This seems wasteful – if the encoding for 3 bytes were instead `1110XXXX XXXXXXXX XXXXXXXX` (where `X` can be any bit), that would fit 20 bits, which is over a million code points worth of space, removing the need for a 4-byte encoding. What are some tradeoffs or reasons the leading `10` might be useful? Can you think of anything that could go wrong with some programs if the encoding didn't include this restriction on multi-byte code points?
 
