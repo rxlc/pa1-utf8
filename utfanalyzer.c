@@ -151,6 +151,9 @@ void copy_string(char str[], char result[]) {
     result[length] = 0;
 }
 
+void print_ascii_validity(char str[]) {
+    printf("Valid ASCII: %s\n", is_ascii(str) ? "true" : "false");
+}
 
 void utf8_analyze_string() {
     char input[100];
@@ -158,13 +161,12 @@ void utf8_analyze_string() {
     fgets(input, 100, stdin);
     remove_nextline(input);
 
-    printf("\nValid ASCII: %s\n", is_ascii(input) ? "true" : "false");
-    //printf("Valid ASCII: true\n");
+    print_ascii_validity(input);
 
     char capitalize_input[100];
     copy_string(input, capitalize_input);
     capitalize_ascii(capitalize_input);
-    printf("Uppercased ASCII: \"%s\"", capitalize_input);
+    printf("Uppercased ASCII: \"%s\"\n", capitalize_input);
     
     printf("Length in bytes: %d\n", string_byte_length(input));
     
