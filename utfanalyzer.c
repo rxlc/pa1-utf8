@@ -151,17 +151,13 @@ void copy_string(char str[], char result[]) {
     result[length] = 0;
 }
 
-void print_ascii_validity(char str[]) {
-    printf("\nValid ASCII: %s\n", is_ascii(str) ? "true" : "false");
-}
-
 void utf8_analyze_string() {
     char input[100];
     printf("%s", "Enter a UTF-8 encoded string:");
     fgets(input, 100, stdin);
     remove_nextline(input);
 
-    print_ascii_validity(input);
+    printf("\nValid ASCII: %s\n", is_ascii(input) ? "true" : "false");
 
     char capitalize_input[100];
     copy_string(input, capitalize_input);
