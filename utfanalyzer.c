@@ -151,7 +151,8 @@ void copy_string(char str[], char result[]) {
     result[length] = 0;
 }
 
-void utf8_analyze_string() {
+
+int main() {
     char input[100];
     printf("%s", "Enter a UTF-8 encoded string:");
     fgets(input, 100, stdin);
@@ -204,10 +205,6 @@ void utf8_analyze_string() {
     animals[animals_index] = 0;
 
     printf("%s\n", animals);
-}
-
-int main() {
-    utf8_analyze_string();
 
     return 0;
 }
