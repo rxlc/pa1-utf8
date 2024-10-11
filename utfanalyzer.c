@@ -158,13 +158,13 @@ void utf8_analyze_string() {
     fgets(input, 100, stdin);
     remove_nextline(input);
 
-    printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
+    printf("\nValid ASCII: %s\n", is_ascii(input) ? "true" : "false");
     //printf("Valid ASCII: true\n");
 
     char capitalize_input[100];
     copy_string(input, capitalize_input);
     capitalize_ascii(capitalize_input);
-    printf("Uppercased ASCII: \"%s\"\n", capitalize_input);
+    printf("Uppercased ASCII: \"%s\"", capitalize_input);
     
     printf("Length in bytes: %d\n", string_byte_length(input));
     
